@@ -1,0 +1,31 @@
+/* App-level styles */
+.App {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Selection color */
+::selection {
+  background-color: #FF1493;
+  color: white;
+}
+
+/* Touch device cursor reset */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
+
+img[loading] {
+  opacity: 0;
+}
+
+img.loaded {
+  opacity: 1;
+}
