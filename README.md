@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## SEO configuration
+
+This project generates `build/robots.txt` and `build/sitemap.xml` during `postbuild`.
+The production domain is currently hardcoded as `https://craaaapcontent.com` in:
+
+- `scripts/generate-seo-files.js`
+- `public/index.html` (canonical / social meta / JSON-LD)
+
 ## Available Scripts
 
 In the project directory, you can run:
