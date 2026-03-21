@@ -14,6 +14,7 @@ import { useBounceLogo, useMagneticEffect } from '@/hooks/useAnimations';
 import BrandsSection from './components/BrandSection';
 
 const LOGO_URL = '/assests/logo1.png';
+const WATERMARK_URL = '/assests/logowatermark.png';
 
 const HeroSection = () => {
   const heroTextRef = useRef(null);
@@ -23,6 +24,27 @@ const HeroSection = () => {
   const logoRef = useBounceLogo(5000);
   const exploreBtnRef = useMagneticEffect(0.4);
   const contactBtnRef = useMagneticEffect(0.4);
+  const leftWatermarkRef = useRef(null);
+  const rightWatermarkRef = useRef(null);
+
+  useEffect(() => {
+    const applyResponsive = () => {
+      const isMobile = window.innerWidth < 1024;
+      if (leftWatermarkRef.current) {
+        leftWatermarkRef.current.style.width = isMobile ? '2400px' : 'clamp(1100px, 280vw, 2400px)';
+        leftWatermarkRef.current.style.top = isMobile ? '18%' : '5%';
+        leftWatermarkRef.current.style.left = isMobile ? '-33vw' : 'clamp(-620px, -35vw, -150px)';
+      }
+      if (rightWatermarkRef.current) {
+        rightWatermarkRef.current.style.width = isMobile ? '70vw' : 'clamp(200px, 30vw, 900px)';
+        rightWatermarkRef.current.style.top = isMobile ? '10%' : '30%';
+        rightWatermarkRef.current.style.right = isMobile ? '-17vw' : 'clamp(-40px, 2vw, 20px)';
+      }
+    };
+    applyResponsive();
+    window.addEventListener('resize', applyResponsive);
+    return () => window.removeEventListener('resize', applyResponsive);
+  }, []);
 
   useEffect(() => {
     const tl = gsap.timeline({ delay: 2.5 });
@@ -61,6 +83,32 @@ const HeroSection = () => {
         }
       );
     }
+
+    // 3D float for left watermark
+    gsap.to(leftWatermarkRef.current, {
+      rotateY: 8,
+      rotateX: 4,
+      y: -18,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      transformOrigin: 'center center',
+    });
+
+    // 3D float for right watermark
+    gsap.to(rightWatermarkRef.current, {
+      rotateY: -10,
+      rotateX: -5,
+      y: -14,
+      duration: 3.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      delay: 1,
+      transformOrigin: 'center center',
+    });
+
   }, []);
 
   const scrollToContact = () => {
@@ -92,6 +140,45 @@ const HeroSection = () => {
       className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'linear-gradient(180deg, #FFF0F5 0%, #FFFFFF 60%, #FFF0F5 100%)' }}
     >
+      {/* Left watermark */}
+      <img
+        ref={leftWatermarkRef}
+        src={WATERMARK_URL}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '5%',
+          left: 'clamp(-620px, -35vw, -150px)',
+          width: 'clamp(1100px, 280vw, 2400px)',
+          opacity: 0.22,
+          transform: 'rotate(-15deg)',
+          filter: 'blur(4px)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 1,
+        }}
+      />
+      {/* Right watermark */}
+      <img
+        ref={rightWatermarkRef}
+        src={WATERMARK_URL}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '30%',
+          right: 'clamp(-40px, 2vw, 20px)',
+          width: 'clamp(200px, 30vw, 900px)',
+          opacity: 0.22,
+          transform: 'scaleX(-1) rotate(-15deg)',
+          filter: 'blur(4px)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 1,
+        }}
+      />
+
       <FloatingBubbles count={12} section="hero" />
       {/* <HeroCanvas /> */}
 
